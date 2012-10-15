@@ -86,7 +86,7 @@ function plugin_tracker_convert()
 	}
 	unset($args, $argc, $arg);
 
-	$tracker_form = & new Tracker_form();
+	$tracker_form = new Tracker_form();
 	if (! $tracker_form->init($base, $refer, $config, $rel)) {
 		return '#tracker: ' . htmlsc($tracker_form->error) . '<br />';
 	}
@@ -174,7 +174,7 @@ function plugin_tracker_action()
 
 	$from = $to = array();
 
-	$tracker_form = & new Tracker_form();
+	$tracker_form = new Tracker_form();
 	if (! $tracker_form->init($base, $refer, $config)) {
 		return array(
 			'msg'  => 'Cannot write',
@@ -407,7 +407,7 @@ class Tracker_form
 			return FALSE;
 		}
 
-		$this->fields[$fieldname] = & new $class(
+		$this->fields[$fieldname] = new $class(
 			$this,			// Reference
 			array(
 				$fieldname,
@@ -918,7 +918,7 @@ function plugin_tracker_list_action()
 
 function plugin_tracker_list_render($base, $refer, $rel = '', $config = '', $order = '', $list = '', $limit = NULL)
 {
-	$tracker_list = & new Tracker_list();
+	$tracker_list = new Tracker_list();
 
 	if (! $tracker_list->init($base, $refer, $config, $rel)  ||
 		! $tracker_list->setSortOrder($order)) {
@@ -961,7 +961,7 @@ class Tracker_list
 
 	function init($base, $refer, $config = NULL, $relative = '')
 	{
-		$this->form = & new Tracker_form();
+		$this->form = new Tracker_form();
 		return $this->form->init($base, $refer, $config, $relative);
 	}
 

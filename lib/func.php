@@ -322,11 +322,11 @@ function encode($str)
 // Decode page name
 function decode($str)
 {
-	return hex2bin($str);
+	return hex2bin_impl($str);
 }
 
 // Inversion of bin2hex()
-function hex2bin($hex_string)
+function hex2bin_impl($hex_string)
 {
 	// preg_match : Avoid warning : pack(): Type H: illegal hex digit ...
 	// (string)   : Always treat as string (not int etc). See BugTrack2/31
@@ -566,7 +566,7 @@ function get_autolink_pattern(& $pages, $min_len = -1)
 {
 	global $WikiName, $autolink, $nowikiname;
 
-	$config = &new Config('AutoLink');
+	$config = new Config('AutoLink');
 	$config->read();
 	$ignorepages      = $config->get('IgnoreList');
 	$forceignorepages = $config->get('ForceIgnoreList');

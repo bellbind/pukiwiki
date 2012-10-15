@@ -19,7 +19,7 @@ function convert_html($lines)
 
 	if (! is_array($lines)) $lines = explode("\n", $lines);
 
-	$body = & new Body(++$contents_id);
+	$body = new Body(++$contents_id);
 	$body->parse($lines);
 
 	return $body->toString();
@@ -60,7 +60,7 @@ class Element
 		return $this->last = & $obj->last;
 	}
 
-	function canContain($obj)
+	function canContain(& $obj)
 	{
 		return TRUE;
 	}
@@ -178,7 +178,7 @@ class Inline extends Element
 		return $this;
 	}
 
-	function canContain($obj)
+	function canContain(&$obj)
 	{
 		return is_a($obj, 'Inline');
 	}
@@ -191,7 +191,7 @@ class Inline extends Element
 
 	function & toPara($class = '')
 	{
-		$obj = & new Paragraph('', $class);
+		$obj = new Paragraph('', $class);
 		$obj->insert($this);
 		return $obj;
 	}
@@ -214,7 +214,7 @@ class Paragraph extends Element
 		$this->insert(Factory_Inline($text));
 	}
 
-	function canContain($obj)
+	function canContain(&$obj)
 	{
 		return is_a($obj, 'Inline');
 	}
@@ -572,7 +572,7 @@ class Table extends Element
 		$is_template = ($this->type == 'c');
 		$row = array();
 		foreach ($cells as $cell)
-			$row[] = & new TableCell($cell, $is_template);
+			$row[] = new TableCell($cell, $is_template);
 		$this->elements[] = $row;
 	}
 
@@ -830,7 +830,7 @@ class Body extends Element
 	function Body($id)
 	{
 		$this->id            = $id;
-		$this->contents      = & new Element();
+		$this->contents      = new Element();
 		$this->contents_last = & $this->contents;
 		parent::Element();
 	}
