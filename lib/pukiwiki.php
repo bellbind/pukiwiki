@@ -71,9 +71,9 @@ $page  = isset($vars['page'])  ? $vars['page']  : '';
 $refer = isset($vars['refer']) ? $vars['refer'] : '';
 
 if (isset($vars['cmd'])) {
-	$plugin = & $vars['cmd'];
+	$plugin = $vars['cmd'];
 } else if (isset($vars['plugin'])) {
-	$plugin = & $vars['plugin'];
+	$plugin = $vars['plugin'];
 } else {
 	$plugin = '';
 }
@@ -88,26 +88,26 @@ if ($spam && $method != 'GET') {
 	switch ($_plugin) {
 		case 'search': $_spam = FALSE; break;
 		case 'edit':
-			$_page = & $page;
+			$_page = $page;
 			if (isset($vars['add']) && $vars['add']) {
 				$_plugin = 'add';
 			} else {
 				$_ignore[] = 'original';
 			}
 			break;
-		case 'bugtrack': $_page = & $vars['base'];  break;
-		case 'tracker':  $_page = & $vars['_base']; break;
-		case 'read':     $_page = & $page;  break;
-		default: $_page = & $refer; break;
+		case 'bugtrack': $_page = $vars['base'];  break;
+		case 'tracker':  $_page = $vars['_base']; break;
+		case 'read':     $_page = $page;  break;
+		default: $_page = $refer; break;
 	}
 
 	if ($_spam) {
 		require(LIB_DIR . 'spam.php');
 
 		if (isset($spam['method'][$_plugin])) {
-			$_method = & $spam['method'][$_plugin];
+			$_method = $spam['method'][$_plugin];
 		} else if (isset($spam['method']['_default'])) {
-			$_method = & $spam['method']['_default'];
+			$_method = $spam['method']['_default'];
 		} else {
 			$_method = array();
 		}
@@ -117,13 +117,13 @@ if ($spam && $method != 'GET') {
 		if ($_ignore) {
 			$_vars = array();
 			foreach($vars as $key => $value) {
-				$_vars[$key] = & $vars[$key];
+				$_vars[$key] = $vars[$key];
 			}
 			foreach($_ignore as $key) {
 				unset($_vars[$key]);
 			}
 		} else {
-			$_vars = & $vars;
+			$_vars = $vars;
 		}
 
 		pkwk_spamfilter($method . ' to #' . $_plugin, $_page, $_vars, $_method, $exitmode);
@@ -145,7 +145,7 @@ if ($plugin != '') {
 	} else {
 		$msg = 'plugin=' . htmlsc($plugin) . ' is not implemented.';
 		$retvars = array('msg'=>$msg,'body'=>$msg);
-		$base    = & $defaultpage;
+		$base    = $defaultpage;
 	}
 }
 
@@ -158,16 +158,16 @@ if (isset($retvars['msg']) && $retvars['msg'] != '') {
 }
 
 if (isset($retvars['body']) && $retvars['body'] != '') {
-	$body = & $retvars['body'];
+	$body = $retvars['body'];
 } else {
 	if ($base == '' || ! is_page($base)) {
-		$base  = & $defaultpage;
+		$base  = $defaultpage;
 		$title = htmlsc(strip_bracket($base));
 		$page  = make_search($base);
 	}
 
 	$vars['cmd']  = 'read';
-	$vars['page'] = & $base;
+	$vars['page'] = $base;
 
 	$body  = convert_html(get_source($base));
 }
